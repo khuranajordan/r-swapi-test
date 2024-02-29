@@ -1,10 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Grid, Button } from "@chakra-ui/react";
 import SingleCharacter from "./SingleCharacter";
 import { PropTypes } from "prop-types";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
+import { useNavigate } from "react-router-dom";
 
 const AllCharacters = ({ people = [] }) => {
+  const navigate = useNavigate();
+  const [, setAuthenticated] = useState(false);
+
   const [currentPage, setCurrentPage] = useState(0);
   const charactersPerPage = 1;
   const indexOfLastCharacter = (currentPage + 1) * charactersPerPage;
@@ -13,8 +17,15 @@ const AllCharacters = ({ people = [] }) => {
     indexOfFirstCharacter,
     indexOfLastCharacter
   );
-  console.log({ indexOfFirstCharacter, indexOfLastCharacter }, people.length, indexOfLastCharacter === people.length);
 
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setAuthenticated(true);
+    } else {
+      navigate("/login");
+    }
+  }, [navigate]);
   const nextPage = () => {
     setCurrentPage((prevPage) => prevPage + 1);
   };

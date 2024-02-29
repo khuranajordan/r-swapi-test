@@ -8,6 +8,8 @@ import {
 import "./App.css";
 import AllCharacters from "./components/AllCharacters";
 import { useEffect, useState } from "react";
+import { Route, Routes } from "react-router-dom";
+import Login from "./components/Login";
 
 const { Button } = chakraTheme.components;
 
@@ -20,6 +22,7 @@ const theme = extendBaseTheme({
 function App() {
   const [people, setPeople] = useState([]);
   const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     setLoading(true);
     fetch("https://swapi.dev/api/people")
@@ -40,7 +43,10 @@ function App() {
   }
   return (
     <ChakraBaseProvider theme={theme}>
-      <AllCharacters people={people} />
+      <Routes>
+        <Route path={"/login"} element={<Login />} />
+        <Route path="/" element={<AllCharacters people={people} />} />
+      </Routes>
     </ChakraBaseProvider>
   );
 }
