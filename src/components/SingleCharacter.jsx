@@ -66,7 +66,7 @@ export default SingleCharacter;
 
 SingleCharacter.propTypes = {
   name: PropTypes.string,
-  height: PropTypes.number,
-  mass: PropTypes.number,
+  height: PropTypes.string,
+  mass: PropTypes.string,
   dob: PropTypes.string,
 };
