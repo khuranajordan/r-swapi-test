@@ -12,7 +12,7 @@ import { useEffect, useState } from "react";
 import { PropTypes } from "prop-types";
 
 const SingleCharacter = ({ name, height, mass, dob }) => {
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState("../assets/loading-image.jpg");
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     setLoading(true);
