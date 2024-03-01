@@ -31,35 +31,25 @@ const Login = () => {
     }
   };
 
-  //   const handleLogout = () => {
-  //     localStorage.removeItem('token');
-  //   };
-
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100vh",
-        background:
-          "url(https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Star_Wars_Logo.svg/1200px-Star_Wars_Logo.svg.png)",
-        objectFit: "cover",
-        backgroundRepeat: "no-repeat",
-        backgroundSize:"cover"
-      }}
+    <Flex
+      minH="100vh"
+      align="center"
+      justify="center"
+      bgImage="url(https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Star_Wars_Logo.svg/1200px-Star_Wars_Logo.svg.png)"
+      bgSize="cover"
+      bgRepeat="no-repeat"
     >
       <Flex
         direction="column"
-        alignItems={"center"}
-        justifyContent={"center"}
-        border={"1px solid #cecece"}
+        align="center"
+        border="1px solid #cecece"
         borderRadius={5}
-        opacity={"0.9"}
-        w={"30%"}
-        padding={10}
+        opacity={0.9}
+        w={{ base: "90%", md: "40%", lg: "30%" }}
+        p={10}
       >
-        <Text mb={5} as="h1" fontSize={"30px"}>
+        <Text mb={5} as="h1" fontSize={{ base: "24px", md: "30px" }}>
           LOGIN
         </Text>
         <Box>
@@ -67,7 +57,7 @@ const Login = () => {
             placeholder="Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            border={"1px"}
+            border="1px"
             padding={3}
           />
         </Box>
@@ -75,13 +65,13 @@ const Login = () => {
           <Input
             placeholder="Password"
             type="password"
-            border={"1px"}
+            border="1px"
             padding={3}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
         </Box>
-        <Button onClick={handleLogin} mt={4}>
+        <Button onClick={handleLogin} mt={4} w="100%">
           Login
         </Button>
         {error && (
@@ -90,7 +80,7 @@ const Login = () => {
           </Text>
         )}
       </Flex>
-    </div>
+    </Flex>
   );
 };
 

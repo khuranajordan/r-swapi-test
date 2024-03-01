@@ -13,6 +13,7 @@ const AllCharacters = ({ people = [] }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOrder, setSortOrder] = useState("asc");
   const [sortBy, setSortBy] = useState("");
+  const [firstPageOfSet, setFirstPageOfSet] = useState(0); // First page of the current set
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -37,6 +38,7 @@ const AllCharacters = ({ people = [] }) => {
   });
 
   const charactersPerPage = 1;
+  const totalPages = Math.ceil(filteredCharacters.length / charactersPerPage);
   const indexOfLastCharacter = (currentPage + 1) * charactersPerPage;
   const indexOfFirstCharacter = indexOfLastCharacter - charactersPerPage;
   const currentCharacters = sortedCharacters.slice(
@@ -46,10 +48,16 @@ const AllCharacters = ({ people = [] }) => {
 
   const nextPage = () => {
     setCurrentPage((prevPage) => prevPage + 1);
+    if (currentPage + 1 >= firstPageOfSet + 3 && firstPageOfSet + 3 < totalPages) {
+      setFirstPageOfSet((prevPage) => prevPage + 1);
+    }
   };
 
   const prevPage = () => {
     setCurrentPage((prevPage) => prevPage - 1);
+    if (currentPage > 0 && currentPage === firstPageOfSet) {
+      setFirstPageOfSet((prevPage) => prevPage - 1);
+    }
   };
 
   const handleSearch = (e) => {
@@ -98,18 +106,23 @@ const AllCharacters = ({ people = [] }) => {
           <ChevronLeftIcon />
           &nbsp;Previous
         </Button>
-        {filteredCharacters.map((_, idx) => (
-          <Button
-            key={idx}
-            style={{
-              margin: "0 5px",
-              backgroundColor: currentPage === idx ? "#adadc9" : "",
-            }}
-            onClick={() => setCurrentPage(idx)}
-          >
-            {idx + 1}
-          </Button>
-        ))}
+        {Array.from({ length: 3 }).map((_, idx) => {
+          const page = firstPageOfSet + idx;
+          return (
+            page < totalPages && (
+              <Button
+                key={idx}
+                style={{
+                  margin: "0 5px",
+                  backgroundColor: currentPage === page ? "#adadc9" : "",
+                }}
+                onClick={() => setCurrentPage(page)}
+              >
+                {page + 1}
+              </Button>
+            )
+          );
+        })}
         <Button
           onClick={nextPage}
           isDisabled={indexOfLastCharacter >= filteredCharacters.length}
