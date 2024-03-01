@@ -11,6 +11,8 @@ const AllCharacters = ({ people = [] }) => {
   const [, setAuthenticated] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
+  const [sortOrder, setSortOrder] = useState("asc");
+  const [sortBy, setSortBy] = useState("");
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -25,10 +27,19 @@ const AllCharacters = ({ people = [] }) => {
     person.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const sortedCharacters = filteredCharacters.slice().sort((a, b) => {
+    if (sortBy === "name") {
+      return sortOrder === "asc"
+        ? a.name.localeCompare(b.name)
+        : b.name.localeCompare(a.name);
+    }
+    return 0;
+  });
+
   const charactersPerPage = 1;
   const indexOfLastCharacter = (currentPage + 1) * charactersPerPage;
   const indexOfFirstCharacter = indexOfLastCharacter - charactersPerPage;
-  const currentCharacters = filteredCharacters.slice(
+  const currentCharacters = sortedCharacters.slice(
     indexOfFirstCharacter,
     indexOfLastCharacter
   );
@@ -46,6 +57,11 @@ const AllCharacters = ({ people = [] }) => {
     setCurrentPage(0);
   };
 
+  const handleSort = () => {
+    setSortOrder((prevOrder) => (prevOrder === "asc" ? "desc" : "asc"));
+    setSortBy("name");
+  };
+
   return (
     <div>
       <Grid gap={6} m={10} placeItems={"center"}>
@@ -58,24 +74,25 @@ const AllCharacters = ({ people = [] }) => {
           padding={2}
           borderRadius={5}
         />
+        <Button onClick={handleSort} mb={4}>
+          Sort by Name ({sortOrder === "asc" ? "Ascending" : "Descending"})
+        </Button>
         {currentCharacters.length > 0 ? (
           currentCharacters.map((person) => (
-            <>
-              <SingleCharacter
-                key={person.url}
-                name={person.name}
-                height={person.height}
-                mass={person.mass}
-                dob={person.birth_year}
-              />
-            </>
+            <SingleCharacter
+              key={person.url}
+              name={person.name}
+              height={person.height}
+              mass={person.mass}
+              dob={person.birth_year}
+            />
           ))
         ) : (
           <p>No matching results found.</p>
         )}
       </Grid>
       <div
-        style={{ display: "flex", justifyContent: "center", marginTop: "20px" }}
+        style={{ display: "flex", justifyContent: "center", margin: "20px 0" }}
       >
         <Button onClick={prevPage} isDisabled={currentPage === 0}>
           <ChevronLeftIcon />
@@ -84,7 +101,10 @@ const AllCharacters = ({ people = [] }) => {
         {filteredCharacters.map((_, idx) => (
           <Button
             key={idx}
-            style={{ margin: "0 5px" }}
+            style={{
+              margin: "0 5px",
+              backgroundColor: currentPage === idx ? "#adadc9" : "",
+            }}
             onClick={() => setCurrentPage(idx)}
           >
             {idx + 1}
