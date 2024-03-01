@@ -48,7 +48,10 @@ const AllCharacters = ({ people = [] }) => {
 
   const nextPage = () => {
     setCurrentPage((prevPage) => prevPage + 1);
-    if (currentPage + 1 >= firstPageOfSet + 3 && firstPageOfSet + 3 < totalPages) {
+    if (
+      currentPage + 1 >= firstPageOfSet + 3 &&
+      firstPageOfSet + 3 < totalPages
+    ) {
       setFirstPageOfSet((prevPage) => prevPage + 1);
     }
   };
@@ -60,10 +63,10 @@ const AllCharacters = ({ people = [] }) => {
     }
   };
 
-  const handleSearch = (e) => {
+  function handleSearch(e) {
     setSearchQuery(e.target.value);
     setCurrentPage(0);
-  };
+  }
 
   const handleSort = () => {
     setSortOrder((prevOrder) => (prevOrder === "asc" ? "desc" : "asc"));
@@ -76,7 +79,7 @@ const AllCharacters = ({ people = [] }) => {
         <Input
           placeholder="Search character..."
           value={searchQuery}
-          onChange={(e) => debounce(handleSearch(e), 500)}
+          onChange={(e) => debounce(handleSearch(e), 300)}
           mb={4}
           border={"1px solid #cecece"}
           padding={2}

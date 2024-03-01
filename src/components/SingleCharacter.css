@@ -1,0 +1,16 @@
+.character-card {
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .character-card:hover {
+    transform: scale(1.1);
+  }
+  
+  .character-image {
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .character-image:hover {
+    transform: scale(1.1);
+  }
+  
